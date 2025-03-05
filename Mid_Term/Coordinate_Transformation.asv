@@ -1,0 +1,41 @@
+clc;
+clear;
+
+org_data = readtable('first_try.csv');
+
+q0 = 0.7071; q1 = 0.7071; q2 = 0; q3 = 0;
+
+% q0 = 0.7071; q1 = 0.7071; q2 = 0; q3 = 0;  % 示例四元数
+% x = 1; y = 0; z = 0;  % 示例传感器加速度数据
+% 
+% [ax, ay, az] = Gyro2World(q0, q1, q2, q3, x, y, z);
+% disp([ax, ay, az]);  % 输出转换后的加速度
+
+%% 将设备坐标系下测得的角速度转为世界坐标系下的角速度
+accx_org = table2array(org_data(:,"Var2"));
+accy_org = table2array(org_data(:,"Var3"));
+accz_org = table2array(org_data(:,"Var4"));
+
+[accx, accy, accz] = Gyro2World(q0, q1, q2, q3, accx_org, accy_org, accz_org);
+
+%% 将设备坐标系下测得的角加速度转为世界坐标系下的角加速度
+gyrox_org = table2array(org_data(:,"Var5"));
+gyroy_org = table2array(org_data(:,"Var6"));
+gyroz_org = table2array(org_data(:,"Var7"));
+
+[gyrox, gyroy, gyroz] = Gyro2World(q0, q1, q2, q3, gyrox_org, gyroy_org, gyroz_org);
+
+%% 将四元数转为欧拉角
+q0_org = table2array(org_data(:,"Var8"));
+q1_org = table2array(org_data(:,"Var9"));
+q2_org = table2array(org_data(:,"Var10"));
+q3_org = table2array(org_data(:,"Var6"));
+
+
+%% 数据可视化
+
+
+
+
+
+
