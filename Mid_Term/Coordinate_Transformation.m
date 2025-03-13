@@ -1,7 +1,7 @@
 clc;
 clear;
 
-org_data = readtable('side_front.csv');
+org_data = readtable('now_testing.csv');
 
 q0 = 0.5; q1 = -0.5; q2 = 0.5; q3 = 0.5;
 rot_dev2std = [
@@ -41,6 +41,12 @@ x = table2array(org_data(:,"Var8"));
 y = table2array(org_data(:,"Var9"));
 z = table2array(org_data(:,"Var10"));
 
+% q0_org = table2array(org_data(:,"Var11"));
+% yaw = table2array(org_data(:,"Var8"));
+% pitch = table2array(org_data(:,"Var9"));
+% roll = table2array(org_data(:,"Var11"));
+
+
 q_current = [w, x, y, z];
 
 % q_ref = [0.6857, 0.0365, -0.7267, 0];  % 初始参考四元数（手臂下垂）
@@ -66,6 +72,32 @@ for i = 1:1:height(q_current)
     judgeArmDirection(q_ref, q_current(i,:));
 end
 
+%% 充放气判断
+control_ = zeros(height(theta),1);
+control_pro = zeros(height(theta),1);
+
+theta_hold = 40;
+theta_hold_pro_1 = 15;
+theta_hold_pro_2 = 105;
+velocity_hold = 100;
+on = 1;
+off = 0;
+
+for i = 1:1:height(theta)
+    if theta(i,:) > theta_hold
+        control_(i,:) = on;
+        control_pro(i,:) = on;
+    elseif theta(i,:) > theta_hold_pro_1 && (gyrox(i) < -velocity_hold || gyroy(i) < -velocity_hold)
+        control_pro(i,:) = on;
+    else
+        control_(i,:) = off;
+        control_pro(i,:) = off;
+    end
+
+    if theta(i,:) > theta_hold && theta(i,:) < theta_hold_pro_2 && (gyrox(i) > velocity_hold || gyroy(i) > velocity_hold)
+        control_pro(i,:) = off;
+    end
+end
 
 %% 数据可视化
 time = datetime(org_data.A1, 'InputFormat', 'yyyy-MM-dd HH:mm:ss.SSS');
@@ -114,16 +146,16 @@ xlabel('Time'); ylabel('GyroZ (rad/s)');
 title('Angular Velocity - Z');
 grid on;
 
-%%绘制角度数据
+%绘制角度数据
 % figure;
 % subplot(3,1,1);
-% plot(time, yaw, 'Color', color1, 'LineWidth', 1.5);
+% plot(time, pitch, 'Color', color1, 'LineWidth', 1.5);
 % xlabel('Time'); ylabel('Yaw (°)');
 % title('Euler Angle - Yaw');
 % grid on;
 % 
 % subplot(3,1,2);
-% plot(time, pitch, 'Color', color2, 'LineWidth', 1.5);
+% plot(time, yaw, 'Color', color2, 'LineWidth', 1.5);
 % xlabel('Time'); ylabel('Pitch (°)');
 % title('Euler Angle - Pitch');
 % grid on;
@@ -152,3 +184,34 @@ xlabel('Time');
 ylabel('Angle (°)');
 title('Arm Angles');
 grid on;
+
+figure;
+subplot(2,1,1);
+plot(time, gyrox, 'Color', color1, 'LineWidth', 1.5); hold on;
+plot(time, gyroy, 'Color', color2, 'LineWidth', 1.5);
+plot(time, theta, 'Color', color3, 'LineWidth', 1.5);
+hold off;
+
+xlabel('Time');
+ylabel('Values');
+title('GyroX, GyroY, and Theta');
+legend({'GyroX', 'GyroY', 'Theta'});
+grid on;
+
+subplot(2,1,2);
+plot(time, control_, 'LineWidth', 1.5);hold on;
+plot(time, control_pro, 'LineWidth', 1.5);
+xlabel('Time');
+ylabel('Values');
+title('Inflate and Deflate Control');
+legend({'Angle', 'Angle and Velocity'});
+grid on;
+
+% subplot(3,1,3);
+% 
+% 
+% xlabel('Time');
+% ylabel('Values');
+% title('Angle and Angular Velocity Control');
+% grid on;
+
