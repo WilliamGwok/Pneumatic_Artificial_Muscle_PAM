@@ -15,8 +15,8 @@ Undergraduate Graduation Project: A Flexible Structure for Shoulder Assistance
 
 <table>
   <tr>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir2.png" width="200"></td>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir3.png" width="200"></td>
+    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir2.png" width="400"></td>
+    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir3.png" width="400"></td>
   </tr>
 </table>
 
@@ -24,7 +24,7 @@ sim2real!!!
 
 <table>
   <tr>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir4.png" width="200"></td>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir5.jpg" width="200"></td>
+    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir4.png" width="400"></td>
+    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/cir5.jpg" width="400"></td>
   </tr>
 </table>
