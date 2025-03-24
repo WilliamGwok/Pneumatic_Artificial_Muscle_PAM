@@ -37,20 +37,23 @@ https://github.com/user-attachments/assets/c4d2238a-885b-43af-a62f-72c8686b68ed
 
 
 中期答辩
-<table>
-  <tr>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide0.png" width="400"></td>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide1.png" width="400"></td>
-  </tr>
-</table>
 
-sim2real!!!
+加两只老登团建
 
-<table>
-  <tr>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide2.png" width="400"></td>
-    <td><img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide3.png" width="400"></td>
-  </tr>
-</table>
+<div align="center">
+<img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide0.jpg" width="710px">
+</div>
+
+<div align="center">
+<img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide1.png" width="710px">
+</div>
+
+<div align="center">
+<img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide2.png" width="710px">
+</div>
+
+<div align="center">
+<img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Mid_Slide3.png" width="710px">
+</div>
 
 
