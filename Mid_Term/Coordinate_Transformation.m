@@ -35,17 +35,11 @@ gyrox = gyro(1,:);
 gyroy = gyro(2,:);
 gyroz = gyro(3,:);
 
-%% 将四元数转为欧拉角
+%% 
 w = table2array(org_data(:,"Var11"));
 x = table2array(org_data(:,"Var8"));
 y = table2array(org_data(:,"Var9"));
 z = table2array(org_data(:,"Var10"));
-
-% q0_org = table2array(org_data(:,"Var11"));
-% yaw = table2array(org_data(:,"Var8"));
-% pitch = table2array(org_data(:,"Var9"));
-% roll = table2array(org_data(:,"Var11"));
-
 
 q_current = [w, x, y, z];
 
