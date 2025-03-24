@@ -97,7 +97,7 @@ void loop() {
 // struct_message myData;
 
 // // Create a structure to hold the readings from each board
-// struct_message board1;
+// struct_message board1;e:\Files\大四下\毕业设计\Github\NOW\receiver\src\posture_detect.cpp
 // struct_message board2;
 // struct_message board3;
 
