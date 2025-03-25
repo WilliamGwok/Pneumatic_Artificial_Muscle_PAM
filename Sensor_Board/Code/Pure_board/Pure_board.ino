@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "src/IMU/My_Imu.h"
 #include "src/Protocol/NOW_Protocol.h"
+#include "src/Module/My_Led.h"
+#include "src/Module/My_ADC.h"
 
 unsigned long lastSendTime = 0;
 const long interval = 20;
@@ -9,7 +11,9 @@ void My_Board_Init()
 {
   My_Imu_Init();
 
-  NOW_Set_Up();
+  // NOW_Set_Up();
+
+  My_LED_Init();
 }
 
 void setup() {
@@ -26,12 +30,14 @@ void loop() {
   {
     lastSendTime = millis();
 
-    My_Imu_Update();
+    // My_Imu_Update();
 
-    NOW_Send_Data();
+    // NOW_Send_Data();
+
+    My_ADC_Work();
   }
   
-  
+  My_LED_Control();
 }
 
 
