@@ -9,6 +9,8 @@ Undergraduate Graduation Project: A Flexible Structure for Shoulder Assistance
 
 画了一块板子, BNO055 + ESP32, 烧充一体
 
+（3/25 update : adc用错引脚了qwq，adc2在用wifi功能时用不了）
+
 <div align="center">
 <img src="https://github.com/WilliamGwok/Pneumatic_Artificial_Muscle_PAM/blob/main/Figures/Cir1.png" width="710px">
 </div>
