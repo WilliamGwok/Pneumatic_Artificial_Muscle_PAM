@@ -1,80 +1,137 @@
 import serial
 import openpyxl
-import os
+import threading
 import time
 from datetime import datetime
+from collections import deque
 
-# 连接 Arduino 串口
-ser = serial.Serial('COM8', 115200, timeout=1)  # 增加 timeout，避免程序卡死
+# 宏定义: 0 = Dear PyGui, 1 = Matplotlib
+USE_MATPLOTLIB = 1
 
-# 创建 Excel 文件
+if USE_MATPLOTLIB:
+    import matplotlib.pyplot as plt
+    import matplotlib.animation as animation
+else:
+    import dearpygui.dearpygui as dpg
+
+# 串口配置
+SERIAL_PORT = 'COM8'
+BAUD_RATE = 115200
+
+# 连接串口
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+
+# Excel 初始化
+file_path = "arduino_data.xlsx"
 wb = openpyxl.Workbook()
 sheet = wb.active
-sheet.append(["Time", "GyroX", "GyroY", "GyroZ"])  # 添加 3 轴数据列
+sheet.append(["Time", "GyroX", "GyroY", "GyroZ"])
 
-# 文件路径
-file_path = "arduino_data.xlsx"
+# 数据缓存
+data_buffer = []
+plot_buffer = deque(maxlen=100)
+buffer_lock = threading.Lock()
 
-# 定义一个带自动重试的保存函数
-def save_with_retry(wb, file_path, retries=3, delay=1):
-    """尝试多次保存 Excel，防止文件占用报错"""
-    for i in range(retries):
+running = True  # 线程运行标志
+
+# 数据采集线程
+def read_serial():
+    global running
+    while running:
         try:
-            wb.save(file_path)
-            print(f"✅ 数据成功保存到: {file_path}")
-            return
-        except PermissionError:
-            print(f"⚠️ 文件被占用，保存失败，重试 {i + 1}/{retries} ...")
-            time.sleep(delay)  # 等待一段时间再重试
-    print("❌ 保存失败，请关闭 Excel 文件后重试！")
-
-# **主循环**
-try:
-    data_buffer = []  # 用于批量存储数据，提高效率
-    while True:
-        try:
-            data = ser.readline().decode(errors="ignore").strip()  # 忽略解码错误
-        except Exception as e:
-            print(f"❌ 读取串口数据时出错: {e}")
-            continue  # 跳过错误，继续采集
-
-        if data:
-            print(f"📡 Received: {data}")
-
-            # 按逗号分割数据
+            data = ser.readline().decode(errors="ignore").strip()
+            if not data:
+                continue
             values = data.split(", ")
-
-            # 确保数据格式正确（应有 3 个数值）
             if len(values) == 3:
                 try:
-                    gyrox = float(values[0])  # 转换为浮点数
-                    gyroy = float(values[1])
-                    gyroz = float(values[2])
-
-                    # 存入数据缓冲区
-                    data_buffer.append([datetime.now(), gyrox, gyroy, gyroz])
-
-                    # **每 10 行数据写入 Excel**
+                    gyrox, gyroy, gyroz = map(float, values)
+                    timestamp = datetime.now()
+                    with buffer_lock:
+                        data_buffer.append([timestamp, gyrox, gyroy, gyroz])
+                        plot_buffer.append([timestamp, gyrox, gyroy, gyroz])
                     if len(data_buffer) >= 10:
                         for row in data_buffer:
                             sheet.append(row)
-                        data_buffer.clear()  # 清空缓冲区
-                        print("📄 批量写入 Excel，暂不保存")
-
+                        data_buffer.clear()
+                        print("📄 批量写入 Excel")
                 except ValueError:
-                    print(f"❌ 数据格式错误: {data}")  # 防止转换错误
-            else:
-                print(f"⚠️ 收到不完整数据: {data}")
+                    print(f"⚠ 数据格式错误: {data}")
+        except Exception as e:
+            print(f"⚠ 读取串口数据时出错: {e}")
+    print("🛑 数据采集线程已停止")
 
-except KeyboardInterrupt:
-    print("🛑 数据采集结束，正在保存 Excel...")
-    
-    # **写入剩余数据**
-    if data_buffer:
-        for row in data_buffer:
-            sheet.append(row)
+serial_thread = threading.Thread(target=read_serial, daemon=True)
+serial_thread.start()
 
-    # **程序结束时保存 Excel**
-    save_with_retry(wb, file_path)
+# Matplotlib 绘图
+if USE_MATPLOTLIB:
+    fig, ax = plt.subplots()
+    ax.set_ylim(-200, 200)
+    ax.set_title("Real-time Gyro Data")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Gyro Value")
+
+    line1, = ax.plot([], [], 'r-', label="GyroX")
+    line2, = ax.plot([], [], 'g-', label="GyroY")
+    line3, = ax.plot([], [], 'b-', label="GyroZ")
+    ax.legend()
+
+    def update_plot(frame):
+        if len(plot_buffer) == 0:
+            return line1, line2, line3
+        times = range(len(plot_buffer))
+        gyrox_values = [data[1] for data in plot_buffer]
+        gyroy_values = [data[2] for data in plot_buffer]
+        gyroz_values = [data[3] for data in plot_buffer]
+        line1.set_data(times, gyrox_values)
+        line2.set_data(times, gyroy_values)
+        line3.set_data(times, gyroz_values)
+        ax.set_xlim(0, len(times))
+        return line1, line2, line3
+
+    ani = animation.FuncAnimation(fig, update_plot, interval=10, blit=False)
+    plt.show()
+else:
+    # Dear PyGui 界面
+    dpg.create_context()
+    with dpg.window(label="实时陀螺仪数据", width=600, height=400):
+        dpg.add_text("数据监测")
+        with dpg.plot(label="Gyro Data", width=500, height=300):
+            dpg.add_plot_axis(dpg.mvXAxis, label="Time", tag="x_axis")
+            dpg.add_plot_axis(dpg.mvYAxis, label="Gyro Value", tag="y_axis")
+            dpg.set_axis_limits("y_axis", -400, 400)
+            dpg.set_axis_limits("x_axis", 10, 40)
+            dpg.add_line_series([], [], label="GyroX", parent="y_axis", tag="GyroX")
+            dpg.add_line_series([], [], label="GyroY", parent="y_axis", tag="GyroY")
+            dpg.add_line_series([], [], label="GyroZ", parent="y_axis", tag="GyroZ")
+        dpg.add_button(label="Close", callback=lambda: dpg.stop_dearpygui())
+    dpg.create_viewport(title='IMU Data Visualization', width=600, height=400)
+    dpg.setup_dearpygui()
+    dpg.show_viewport()
+    while dpg.is_dearpygui_running():
+        with buffer_lock:
+            if len(plot_buffer) > 0:
+                times = list(range(len(plot_buffer)))
+                gyrox_values = [data[1] for data in plot_buffer]
+                gyroy_values = [data[2] for data in plot_buffer]
+                gyroz_values = [data[3] for data in plot_buffer]
+                dpg.set_value("GyroX", [times, gyrox_values])
+                dpg.set_value("GyroY", [times, gyroy_values])
+                dpg.set_value("GyroZ", [times, gyroz_values])
+        dpg.render_dearpygui_frame()
+    dpg.destroy_context()
+
+# 结束处理
+def cleanup():
+    global running
+    print("🛑 停止数据采集...")
+    running = False
+    serial_thread.join()
+    print("🔄 线程已停止")
+    wb.save(file_path)
     ser.close()
-    print("✅ 串口已关闭，数据保存完成")
+    print("💾 数据已保存，串口已关闭")
+
+cleanup()
+
