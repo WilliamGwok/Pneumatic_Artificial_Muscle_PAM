@@ -5,13 +5,13 @@
 #include "src/Module/My_ADC.h"
 
 unsigned long lastSendTime = 0;
-const long interval = 20;
+const long interval = 5;
 
 void My_Board_Init()
 {
   My_Imu_Init();
 
-  // NOW_Set_Up();
+  NOW_Set_Up();
 
   My_LED_Init();
 }
@@ -25,16 +25,15 @@ void setup() {
 
 void loop() {
   //put your main code here, to run repeatedly:
-
   if (millis() - lastSendTime >= interval) 
   {
     lastSendTime = millis();
 
-    // My_Imu_Update();
+    My_Imu_Update();
 
-    // NOW_Send_Data();
+    NOW_Send_Data();
 
-    My_ADC_Work();
+    // My_ADC_Work();
   }
   
   My_LED_Control();

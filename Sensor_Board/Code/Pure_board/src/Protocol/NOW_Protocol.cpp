@@ -10,7 +10,6 @@ esp_now_peer_info_t peerInfo;
 //发送数据结构体
 typedef struct struct_message {
   int id; // must be unique for each sender board
-  float accx;   float accy;   float accz;
   float gyrox;  float gyroy;  float gyroz;
   float q_0;    float q_1;    float q_2;    float q_3;
 } struct_message;
@@ -49,10 +48,6 @@ void NOW_Set_Up(void)
 void NOW_Send_Data()
 {
   // 设置要发送的数据
-  My_NOW_Send_Message.accx = My_Imu_Data.accx;
-  My_NOW_Send_Message.accy = My_Imu_Data.accy;
-  My_NOW_Send_Message.accz = My_Imu_Data.accz;
-
   My_NOW_Send_Message.gyrox = My_Imu_Data.gyrox;
   My_NOW_Send_Message.gyroy = My_Imu_Data.gyroy;
   My_NOW_Send_Message.gyroz = My_Imu_Data.gyroz;
