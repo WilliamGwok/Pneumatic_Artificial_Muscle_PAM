@@ -7,6 +7,8 @@
 
 void My_Imu_Init();
 void My_Imu_Update();
+void My_Imu_Mahony_Init();
+void My_Imu_Mahony_Update();
 
 typedef struct
 {
@@ -33,3 +35,5 @@ typedef struct
 } Imu_Data_t;
 
 extern Imu_Data_t My_Imu_Data;
+
+extern struct MAHONY_FILTER_t mahony_filter; // Mahony ÂË²¨Æ÷½á¹¹Ìå

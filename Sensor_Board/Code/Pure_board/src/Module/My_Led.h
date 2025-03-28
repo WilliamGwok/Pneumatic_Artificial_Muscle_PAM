@@ -10,3 +10,4 @@
 
 void My_LED_Init();
 void My_LED_Control();
+void My_LED_And_Posture_Control();

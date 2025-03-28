@@ -133,7 +133,7 @@ void My_Arm_Posture_Realtime_Detect(float q_0, float q_1, float q_2, float q_3)
 
     My_Arm_Posture_Data.theta = judgeArmPosture(q_ref, My_Arm_Posture_Data.q_current);
 
-    // Serial.printf("theta: %.2f\n", My_Arm_Posture_Data.theta);
+    Serial.printf("theta: %.2f\n", My_Arm_Posture_Data.theta);
 
     judgeArmDirection(q_ref, My_Arm_Posture_Data.q_current);
 }

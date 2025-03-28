@@ -1,5 +1,6 @@
 #include "NOW_Protocol.h"
 #include "../IMU/My_Imu.h"
+#include "../Module/My_Posture_Detect.h"
 
 // 接收模块的 mac 地址 c8:2e:18:67:1a:40
 uint8_t broadcastAddress[] = {0xc8, 0x2e, 0x18, 0x67, 0x1a, 0x40};
@@ -60,11 +61,11 @@ void NOW_Send_Data()
   // 发送数据
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &My_NOW_Send_Message, sizeof(My_NOW_Send_Message));
 
-  if (result == ESP_OK) {
-    Serial.println("Sent with success");
-  } else {
-    Serial.println("Error sending the data");
-  }
+  // if (result == ESP_OK) {
+  //   Serial.println("Sent with success");
+  // } else {
+  //   Serial.println("Error sending the data");
+  // }
 }
 
 

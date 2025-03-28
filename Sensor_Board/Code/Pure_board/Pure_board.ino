@@ -3,9 +3,10 @@
 #include "src/Protocol/NOW_Protocol.h"
 #include "src/Module/My_Led.h"
 #include "src/Module/My_ADC.h"
+#include "src/Module/My_Posture_Detect.h"
 
 unsigned long lastSendTime = 0;
-const long interval = 5;
+const long interval = 10;
 
 void My_Board_Init()
 {
@@ -31,12 +32,19 @@ void loop() {
 
     My_Imu_Update();
 
+    My_Arm_Posture_Realtime_Detect(
+      My_Imu_Data.w,
+      My_Imu_Data.x,
+      My_Imu_Data.y,
+      My_Imu_Data.z
+    );
+
     NOW_Send_Data();
 
     // My_ADC_Work();
   }
   
-  My_LED_Control();
+  My_LED_And_Posture_Control();
 }
 
 
