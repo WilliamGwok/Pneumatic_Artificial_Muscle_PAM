@@ -71,6 +71,12 @@ void setup() {
   
   // Once ESPNow is successfully initialized, register for the receive callback function
   esp_now_register_recv_cb(OnDataRecv);
+
+  pinMode(25, OUTPUT); // 设置GPIO0为输出模式
+  digitalWrite(25, HIGH); // 设置GPIO0输出高电平
+
+  pinMode(26, OUTPUT); // 设置GPIO0为输出模式
+  digitalWrite(26, HIGH); // 设置GPIO0输出高电平
 }
 
 void loop() {

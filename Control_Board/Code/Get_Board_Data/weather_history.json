@@ -1,1 +1,1 @@
-[{"city": "Beijing", "temperature": 0.94, "humidity": 12, "description": "晴"}]
+[{"city": "Beijing", "temperature": 0.94, "humidity": 12, "description": "晴"}, {"city": "Hong Kong", "temperature": 16.29, "humidity": 84, "description": "阴，多云"}, {"city": "Hong Kong", "temperature": 13.99, "humidity": 90, "description": "阴，多云"}, {"city": "Jiangmen", "temperature": 12.64, "humidity": 67, "description": "阴，多云"}, {"city": "New York", "temperature": 19.97, "humidity": 50, "description": "晴，少云"}, {"city": "Shanghai", "temperature": 8.92, "humidity": 43, "description": "晴"}]

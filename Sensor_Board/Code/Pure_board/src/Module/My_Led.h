@@ -1,12 +1,12 @@
 #include <Arduino.h>
 
-#define LED1 16  // Á¬½Óµ½ LED1 µÄÒý½Å ÂÌµÆ
-#define LED2 5  // Á¬½Óµ½ LED2 µÄÒý½Å ºìµÆ
+#define LED1 16  // ï¿½ï¿½ï¿½Óµï¿½ LED1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
+#define LED2 5  // ï¿½ï¿½ï¿½Óµï¿½ LED2 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
 #define LED1_CHANNEL 0
 #define LED2_CHANNEL 1
-#define LED_FREQ 5000  // ÆµÂÊ
-#define LED_RESOLUTION 8  // ·Ö±æÂÊ
+#define LED_FREQ 5000  // Æµï¿½ï¿½
+#define LED_RESOLUTION 8  // ï¿½Ö±ï¿½ï¿½ï¿½
 
 void My_LED_Init();
 void My_LED_Control();

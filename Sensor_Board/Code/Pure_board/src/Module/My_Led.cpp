@@ -16,28 +16,26 @@ void My_LED_Init()
 
 void My_LED_Red()
 {
-  // 点亮 LED2（假设是红色）
   ledcWrite(LED1_CHANNEL, 0);
   ledcWrite(LED2_CHANNEL, 20);
 }
 
 void My_LED_Green()
 {
-  // 点亮 LED1（假设是绿色）
-  ledcWrite(LED1_CHANNEL, 20);  // 亮度 0~255
-  ledcWrite(LED2_CHANNEL, 0);  // 亮度 0~255
+  ledcWrite(LED1_CHANNEL, 20);
+  ledcWrite(LED2_CHANNEL, 0);  
 }
 
 void My_LED_Yellow()
 {
-  // 点亮 LED1（假设是绿色）
-  ledcWrite(LED1_CHANNEL, 20);  // 亮度 0~255
+
+  ledcWrite(LED1_CHANNEL, 20);
   ledcWrite(LED2_CHANNEL, 20);
 }
 
 void My_LED_Off()
 {
-  // 关闭所有 LED
+
   digitalWrite(LED1, LOW);
   digitalWrite(LED2, LOW);
 }
@@ -49,9 +47,9 @@ void My_LED_Control()
 
 void My_LED_And_Posture_Control()
 {
-  float theta = My_Arm_Posture_Data.theta; // 获取手臂抬起角度
+  float theta = My_Arm_Posture_Data.theta;
 
-  // 控制 LED 灯的颜色和亮度
+
   if (theta > 100) 
   {
     My_LED_Red();
@@ -65,16 +63,7 @@ void My_LED_And_Posture_Control()
   }
 }
 
-// void loop() {
-    
-//     delay(1000);
 
-    
-//     delay(1000);
-
-    
-//     delay(1000);
-// }
 
 
 
