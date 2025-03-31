@@ -24,6 +24,10 @@ ArmPostureData_t My_Arm_Posture_Data; // 手臂姿态数据结构体
 //     q_ref[3] = z_ / dataSize;
 // }
 
+
+//动作分4档（1手垂下，2手微微抬起，3手水平，4手高过头顶），充气（手越抬越高，气泵控制）分3次，充气在挡位变更时触发，放气（手越放越低，由电磁阀控制）同理
+//现在我有两个引脚控制气泵和电磁阀的通断，气泵和电磁阀不能同时通电，请为我写出c++控制代码
+
 /**
   * @brief  计算手臂抬起角度
   * @param  float q_ref[], float q_current[], float &dot_product, float &theta
