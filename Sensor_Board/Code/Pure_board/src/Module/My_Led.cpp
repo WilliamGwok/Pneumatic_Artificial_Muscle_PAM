@@ -35,9 +35,8 @@ void My_LED_Yellow()
 
 void My_LED_Off()
 {
-
-  digitalWrite(LED1, LOW);
-  digitalWrite(LED2, LOW);
+  ledcWrite(LED1_CHANNEL, 0);
+  ledcWrite(LED2_CHANNEL, 0);
 }
 
 void My_LED_Control()
@@ -50,16 +49,21 @@ void My_LED_And_Posture_Control()
   float theta = My_Arm_Posture_Data.theta;
 
 
-  if (theta > 100) 
+  if (theta > 120) 
   {
     My_LED_Red();
-  } 
-  else if (theta > 50) 
+  }
+  else if (theta > 90) 
   {
     My_LED_Yellow();
-  } else 
+  }
+  else if (theta > 45) 
   {
     My_LED_Green();
+  }
+  else 
+  {
+    My_LED_Off();
   }
 }
 

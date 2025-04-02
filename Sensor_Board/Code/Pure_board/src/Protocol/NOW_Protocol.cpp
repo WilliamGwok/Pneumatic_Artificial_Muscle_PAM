@@ -11,8 +11,9 @@ esp_now_peer_info_t peerInfo;
 //发送数据结构体
 typedef struct struct_message {
   int id; // must be unique for each sender board
-  float gyrox;  float gyroy;  float gyroz;
-  float q_0;    float q_1;    float q_2;    float q_3;
+  // float gyrox;  float gyroy;  float gyroz;
+  // float q_0;    float q_1;    float q_2;    float q_3;
+  int arm_current_state;
 } struct_message;
 
 struct_message My_NOW_Send_Message = 
@@ -49,14 +50,26 @@ void NOW_Set_Up(void)
 void NOW_Send_Data()
 {
   // 设置要发送的数据
-  My_NOW_Send_Message.gyrox = My_Imu_Data.gyrox;
-  My_NOW_Send_Message.gyroy = My_Imu_Data.gyroy;
-  My_NOW_Send_Message.gyroz = My_Imu_Data.gyroz;
+  // My_NOW_Send_Message.gyrox = My_Imu_Data.gyrox;
+  // My_NOW_Send_Message.gyroy = My_Imu_Data.gyroy;
+  // My_NOW_Send_Message.gyroz = My_Imu_Data.gyroz;
 
-  My_NOW_Send_Message.q_0 = My_Imu_Data.w;
-  My_NOW_Send_Message.q_1 = My_Imu_Data.x;
-  My_NOW_Send_Message.q_2 = My_Imu_Data.y;
-  My_NOW_Send_Message.q_3 = My_Imu_Data.z;
+  // My_NOW_Send_Message.q_0 = My_Imu_Data.w;
+  // My_NOW_Send_Message.q_1 = My_Imu_Data.x;
+  // My_NOW_Send_Message.q_2 = My_Imu_Data.y;
+  // My_NOW_Send_Message.q_3 = My_Imu_Data.z;
+
+  float theta = My_Arm_Posture_Data.theta;
+
+  if (theta > 120) {
+    My_NOW_Send_Message.arm_current_state = 4;
+  }else if (theta > 90) {
+    My_NOW_Send_Message.arm_current_state = 3;
+  }else if (theta > 45) {
+    My_NOW_Send_Message.arm_current_state = 2;
+  }else {
+    My_NOW_Send_Message.arm_current_state = 1;
+  }
 
   // 发送数据
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &My_NOW_Send_Message, sizeof(My_NOW_Send_Message));
