@@ -37,14 +37,17 @@ void loop() {
       My_Imu_Data.x,
       My_Imu_Data.y,
       My_Imu_Data.z
+   
     );
-
+  // My_ADC_Work();
     NOW_Send_Data();
 
-    // My_ADC_Work();
+   
   }
   
   My_LED_And_Posture_Control();
+
+  delay(50);
 }
 
 

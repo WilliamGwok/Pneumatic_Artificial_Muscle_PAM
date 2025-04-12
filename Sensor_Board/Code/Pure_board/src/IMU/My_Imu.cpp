@@ -2,7 +2,7 @@
 
 Adafruit_BNO055 sensor = Adafruit_BNO055();
 
-#define Imu_Print_Data 1
+#define Imu_Print_Data 0
 
 void My_Imu_Posture_Data_Update();
 void My_Imu_Calibration();

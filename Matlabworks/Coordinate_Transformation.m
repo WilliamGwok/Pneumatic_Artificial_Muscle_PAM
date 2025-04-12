@@ -67,29 +67,33 @@ for i = 1:1:height(q_current)
 end
 
 %% 充放气判断
-control_ = zeros(height(theta),1);
-control_pro = zeros(height(theta),1);
+control_without_theta_dot = zeros(height(theta),1);
+control_with_theta_dot = zeros(height(theta),1);
 
-theta_hold = 40;
-theta_hold_pro_1 = 15;
-theta_hold_pro_2 = 105;
-velocity_hold = 100;
+theta_on_gate_1 = 40;
+theta_off_gate_1 = 40;
+
+theta_on_gate_2 = 15;
+theta_off_gate_2 = 105;
+
+theta_dot_gate = 100;
+
 on = 1;
 off = 0;
 
 for i = 1:1:height(theta)
-    if theta(i,:) > theta_hold
-        control_(i,:) = on;
-        control_pro(i,:) = on;
-    elseif theta(i,:) > theta_hold_pro_1 && (gyrox(i) < -velocity_hold || gyroy(i) < -velocity_hold)
-        control_pro(i,:) = on;
+    if theta(i,:) > theta_on_gate_1
+        control_without_theta_dot(i,:) = on;
+        control_with_theta_dot(i,:) = on;
+    elseif theta(i,:) > theta_on_gate_2 && (gyrox(i) < -theta_dot_gate || gyroy(i) < -theta_dot_gate)
+        control_with_theta_dot(i,:) = on;
     else
-        control_(i,:) = off;
-        control_pro(i,:) = off;
+        control_without_theta_dot(i,:) = off;
+        control_with_theta_dot(i,:) = off;
     end
 
-    if theta(i,:) > theta_hold && theta(i,:) < theta_hold_pro_2 && (gyrox(i) > velocity_hold || gyroy(i) > velocity_hold)
-        control_pro(i,:) = off;
+    if theta(i,:) > theta_off_gate_1 && theta(i,:) < theta_off_gate_2 && (gyrox(i) > theta_dot_gate || gyroy(i) > theta_dot_gate)
+        control_with_theta_dot(i,:) = off;
     end
 end
 
@@ -193,8 +197,8 @@ legend({'GyroX', 'GyroY', 'Theta'});
 grid on;
 
 subplot(2,1,2);
-plot(time, control_, 'LineWidth', 1.5);hold on;
-plot(time, control_pro, 'LineWidth', 1.5);
+plot(time, control_without_theta_dot, 'LineWidth', 1.5);hold on;
+plot(time, control_with_theta_dot, 'LineWidth', 1.5);
 xlabel('Time');
 ylabel('Values');
 title('Inflate and Deflate Control');
