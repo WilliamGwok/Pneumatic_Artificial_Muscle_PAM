@@ -9,7 +9,7 @@ float send_test[3];
 ArmPostureData_t My_Arm_Posture_Data; // 手臂姿态数据结构体
 
 // // 计算q_ref（初始化参考四元数）
-// void calculateQRef() 
+// void calculateQRef() e:\Files\大四下\毕业设计\Github\Sensor_Board\Code\Pure_board\src\IMU\My_Imu.cpp e:\Files\大四下\毕业设计\Github\Sensor_Board\Code\Pure_board\src\IMU\My_Imu.h
 // {
 //     float w_ = 0, x_ = 0, y_ = 0, z_ = 0;
 //     for (int i = 0; i < dataSize; i++) {

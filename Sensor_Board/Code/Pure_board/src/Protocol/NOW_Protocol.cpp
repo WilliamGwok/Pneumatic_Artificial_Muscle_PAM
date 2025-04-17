@@ -5,7 +5,7 @@
 // 接收模块的 mac 地址 c8:2e:18:67:1a:40
 uint8_t broadcastAddress[] = {0xc8, 0x2e, 0x18, 0x67, 0x1a, 0x40};
 // 发送模块的 编号
-int Board_ID = 1;
+int Board_ID = 0;
 // 协议结构体
 esp_now_peer_info_t peerInfo;
 //发送数据结构体
@@ -22,8 +22,8 @@ struct_message My_NOW_Send_Message =
 };
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-  // Serial.print("\r\nLast Packet Send Status:\t");
-  // Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  Serial.print("\r\nLast Packet Send Status:\t");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 void NOW_Set_Up(void)
@@ -74,11 +74,12 @@ void NOW_Send_Data()
   // 发送数据
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &My_NOW_Send_Message, sizeof(My_NOW_Send_Message));
 
-  // if (result == ESP_OK) {
-  //   Serial.println("Sent with success");
-  // } else {
-  //   Serial.println("Error sending the data");
-  // }
+  if (result == ESP_OK) {
+    Serial.println("Sent with success");
+    Serial.printf("state: %d\n", My_NOW_Send_Message.arm_current_state);
+  } else {
+    Serial.println("Error sending the data");
+  }
 }
 
 

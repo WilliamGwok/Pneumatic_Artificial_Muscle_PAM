@@ -12,7 +12,7 @@ void My_Imu_Mahony_Update();
 
 typedef struct
 {
-  //×ËÌ¬Êý¾Ý
+  //ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
   float w;
   float x;
   float y;
@@ -30,10 +30,10 @@ typedef struct
   float gyroz;
   float gyroy;   
 
-  //Ð£×¼Êý¾Ý
+  //Ð£×¼ï¿½ï¿½ï¿½ï¿½
   int is_cali;
 } Imu_Data_t;
 
 extern Imu_Data_t My_Imu_Data;
 
-extern struct MAHONY_FILTER_t mahony_filter; // Mahony ÂË²¨Æ÷½á¹¹Ìå
+extern struct MAHONY_FILTER_t mahony_filter; // Mahony ï¿½Ë²ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½

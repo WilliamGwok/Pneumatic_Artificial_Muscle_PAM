@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
-#define ADC_PIN 14  // Ñ¡Ôñ ADC Òý½Å (32~39)
-#define ADC_MAX 4095  // ESP32 ADC ·Ö±æÂÊ£¨12 Î»£©
-#define VOLTAGE_REF 3.3  // ²Î¿¼µçÑ¹ (ESP32 ×î¸ß 3.3V)
+#define ADC_PIN 14  // Ñ¡ï¿½ï¿½ ADC ï¿½ï¿½ï¿½ï¿½ (32~39)
+#define ADC_MAX 4095  // ESP32 ADC ï¿½Ö±ï¿½ï¿½Ê£ï¿½12 Î»ï¿½ï¿½
+#define VOLTAGE_REF 3.3  // ï¿½Î¿ï¿½ï¿½ï¿½Ñ¹ (ESP32 ï¿½ï¿½ï¿½ 3.3V)
 
 void My_ADC_Work();
 

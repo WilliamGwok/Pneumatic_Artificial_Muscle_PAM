@@ -4,25 +4,25 @@
 #define PUMP_PIN 26
 #define VALVE_PIN 25
 
-int pump_state = 0; // 0: ¹Ø±Õ, 1: ´ò¿ª
-int pump_state_last = 0;// 0: ¹Ø±Õ, 1: ´ò¿ª
+int pump_state = 0; // 0: å…³é—­, 1: æ‰“å¼€
+int pump_state_last = 0;// 0: å…³é—­, 1: æ‰“å¼€
 
 int handPosition = 1;  
 int previousPosition = 1;
 
-// ³äÆø¼ÆÊ±
-unsigned long pumpStartTime = 0;      // ³äÆø¿ªÊ¼Ê±¼ä
-unsigned long totalPumpTime = 0;      // ÀÛ¼Æ³äÆøÊ±¼ä
-unsigned long pumpElapsedTime = 0;     // µ±Ç°³äÆøÊ±¼ä
-const unsigned long pumpDurationPerStep = 2000;  // Ã¿´ÎÉıµµ³äÆøÊ±¼ä£¨2Ãë£©
-const unsigned long maxTotalPumpTime = 6000;     // ×î´ó³äÆøÊ±¼ä£¨6Ãë£©
+// å……æ°”è®¡æ—¶
+unsigned long pumpStartTime = 0;      // å……æ°”å¼€å§‹æ—¶é—´
+unsigned long totalPumpTime = 0;      // ç´¯è®¡å……æ°”æ—¶é—´
+unsigned long pumpElapsedTime = 0;     // å½“å‰å……æ°”æ—¶é—´
+const unsigned long pumpDurationPerStep = 2000;  // æ¯æ¬¡å‡æ¡£å……æ°”æ—¶é—´ï¼ˆ2ç§’ï¼‰
+const unsigned long maxTotalPumpTime = 6000;     // æœ€å¤§å……æ°”æ—¶é—´ï¼ˆ6ç§’ï¼‰
 
 void My_Inflation_Deflation_Control_Init()
 {
     pinMode(PUMP_PIN, OUTPUT);
     pinMode(VALVE_PIN, OUTPUT);
-    digitalWrite(PUMP_PIN, LOW); // ¹Ø±Õ±Ã
-    digitalWrite(VALVE_PIN, LOW); // ¹Ø±Õ·§ÃÅ
+    digitalWrite(PUMP_PIN, LOW); // å…³é—­æ³µ
+    digitalWrite(VALVE_PIN, LOW); // å…³é—­é˜€é—¨
 }
 
 void My_Flation_Realtime_Control(int hand_pos)
@@ -30,79 +30,62 @@ void My_Flation_Realtime_Control(int hand_pos)
     handPosition = hand_pos;
 
     if (handPosition > previousPosition) {
-        // Serial.println("Éıµµ£¬¿ªÊ¼³äÆø...");
+        // Serial.println("å‡æ¡£ï¼Œå¼€å§‹å……æ°”...");
         
-        // Èç¹û»¹Ã»´ïµ½×Ü³äÆøÊ±¼äÏŞÖÆ
+        // å¦‚æœè¿˜æ²¡è¾¾åˆ°æ€»å……æ°”æ—¶é—´é™åˆ¶
         if (totalPumpTime < maxTotalPumpTime) {
-          // ¿ªÆôÆø±Ã
+          // å¼€å¯æ°”æ³µ
           digitalWrite(PUMP_PIN, HIGH);  
-          digitalWrite(VALVE_PIN, HIGH);     // ¹Ø±Õµç´Å·§
+          digitalWrite(VALVE_PIN, HIGH);     // å…³é—­ç”µç£é˜€
           
-          // ¼ÇÂ¼Ã¿´ÎÉıµµµÄ³äÆø¿ªÊ¼Ê±¼ä
+          // è®°å½•æ¯æ¬¡å‡æ¡£çš„å……æ°”å¼€å§‹æ—¶é—´
           pumpStartTime = millis();
 
           pump_state = 1;
         }
       } 
-      // **½µµµ£¨·ÅÆø£©**
+      // **é™æ¡£ï¼ˆæ”¾æ°”ï¼‰**
       else if (handPosition == 1) {
-        // Serial.println("½µµµ£¬¿ªÊ¼·ÅÆø...");
+        // Serial.println("é™æ¡£ï¼Œå¼€å§‹æ”¾æ°”...");
         
-        digitalWrite(PUMP_PIN, LOW);   // ¹Ø±ÕÆø±Ã
-        digitalWrite(VALVE_PIN, LOW);    // ´ò¿ªµç´Å·§
+        digitalWrite(PUMP_PIN, LOW);   // å…³é—­æ°”æ³µ
+        digitalWrite(VALVE_PIN, LOW);    // æ‰“å¼€ç”µç£é˜€
 
-        totalPumpTime = 0;    // ÖØÖÃ×Ü³äÆøÊ±¼ä
+        totalPumpTime = 0;    // é‡ç½®æ€»å……æ°”æ—¶é—´
       } 
-      // **±£³Ö²»±ä£¨ÎŞ¶¯×÷£©**
+      // **ä¿æŒä¸å˜ï¼ˆæ— åŠ¨ä½œï¼‰**
       else {
-        // Serial.println("µ²Î»Î´±ä£¬±£³Öµ±Ç°×´Ì¬¡£");
+        // Serial.println("æŒ¡ä½æœªå˜ï¼Œä¿æŒå½“å‰çŠ¶æ€ã€‚");
       }
   
-    // **³äÆøÊ±¼ä¼à²â**
+    // **å……æ°”æ—¶é—´ç›‘æµ‹**
     if (digitalRead(PUMP_PIN) == HIGH) {
       pumpElapsedTime = millis() - pumpStartTime;
   
-      // ³äÆøÊ±¼ä´ïµ½2Ãë£¬Í£Ö¹³äÆø£¬¼ÆËã×Ü³äÆøÊ±¼ä
+      // å……æ°”æ—¶é—´è¾¾åˆ°2ç§’ï¼Œåœæ­¢å……æ°”ï¼Œè®¡ç®—æ€»å……æ°”æ—¶é—´
       if (pumpElapsedTime >= pumpDurationPerStep) {
 
-        pump_state = 0; // ¹Ø±ÕÆø±Ã
-        digitalWrite(PUMP_PIN, LOW);  // Í£Ö¹Æø±Ã
+        pump_state = 0; // å…³é—­æ°”æ³µ
+        digitalWrite(PUMP_PIN, LOW);  // åœæ­¢æ°”æ³µ
         
   
-        // ¼ì²éÊÇ·ñÒÑ¾­³¬¹ı×î´ó³äÆøÊ±¼ä
+        // æ£€æŸ¥æ˜¯å¦å·²ç»è¶…è¿‡æœ€å¤§å……æ°”æ—¶é—´
         if (totalPumpTime >= maxTotalPumpTime) {
-        //   Serial.println("×Ü³äÆøÊ±¼äÒÑ´ïµ½ÉÏÏŞ£¬Í£Ö¹³äÆø¡£");
-          totalPumpTime = maxTotalPumpTime;  // ±£Ö¤×Ü³äÆøÊ±¼ä²»»á³¬¹ı×î´óÖµ
+        //   Serial.println("æ€»å……æ°”æ—¶é—´å·²è¾¾åˆ°ä¸Šé™ï¼Œåœæ­¢å……æ°”ã€‚");
+          totalPumpTime = maxTotalPumpTime;  // ä¿è¯æ€»å……æ°”æ—¶é—´ä¸ä¼šè¶…è¿‡æœ€å¤§å€¼
         }
       }
     }
 
     if(pump_state == 0 && pump_state_last == 1) {
-        // Serial.println("Æø±ÃÒÑ´ò¿ª£¬¿ªÊ¼³äÆø...");
-        totalPumpTime += pumpElapsedTime;  // ÀÛ¼Ó³äÆøÊ±¼ä
-        pumpElapsedTime = 0;  // ÖØÖÃµ±Ç°³äÆøÊ±¼ä
+        // Serial.println("æ°”æ³µå·²æ‰“å¼€ï¼Œå¼€å§‹å……æ°”...");
+        totalPumpTime += pumpElapsedTime;  // ç´¯åŠ å……æ°”æ—¶é—´
+        pumpElapsedTime = 0;  // é‡ç½®å½“å‰å……æ°”æ—¶é—´
     }
 
-    previousPosition = handPosition;  // ¸üĞÂÉÏÒ»¸öµ²Î»
-    pump_state_last = pump_state;  // ¸üĞÂÉÏÒ»¸ö±Ã×´Ì¬
+    previousPosition = handPosition;  // æ›´æ–°ä¸Šä¸€ä¸ªæŒ¡ä½
+    pump_state_last = pump_state;  // æ›´æ–°ä¸Šä¸€ä¸ªæ³µçŠ¶æ€
 
 
-    Serial.printf("state: %lu\n", totalPumpTime);
+    Serial.printf("state: %d\n", handPosition);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

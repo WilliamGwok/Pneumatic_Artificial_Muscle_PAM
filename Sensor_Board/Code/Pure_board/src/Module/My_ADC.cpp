@@ -5,15 +5,15 @@
 
 void My_ADC_Work()
 {
-  int adcValue = analogRead(ADC_PIN);  // 读取 ADC 值 (0~4095)
+  int adcValue = analogRead(ADC_PIN);  // 锟斤拷取 ADC 值 (0~4095)
 
-  float voltage = (adcValue * VOLTAGE_REF) / ADC_MAX * 2;  // 转换为电压
+  float voltage = (adcValue * VOLTAGE_REF) / ADC_MAX * 2;  // 转锟斤拷为锟斤拷压
 
   #if ADC_Serial_Print
   Serial.print("ADC Value: ");
   Serial.print(adcValue);
   Serial.print("  Voltage: ");
-  Serial.print(voltage, 3);  // 保留 3 位小数
+  Serial.print(voltage, 3);  // 锟斤拷锟斤拷 3 位小锟斤拷
   Serial.println(" V");
   #endif
 }

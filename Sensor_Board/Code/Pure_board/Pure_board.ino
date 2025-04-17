@@ -6,7 +6,7 @@
 #include "src/Module/My_Posture_Detect.h"
 
 unsigned long lastSendTime = 0;
-const long interval = 10;
+const long interval = 20;
 
 void My_Board_Init()
 {
@@ -47,7 +47,6 @@ void loop() {
   
   My_LED_And_Posture_Control();
 
-  delay(50);
 }
 
 
